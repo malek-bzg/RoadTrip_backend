@@ -1,0 +1,49 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  fname     String
+  lname     String
+  email     String   @unique
+  phonenumber String @unique 
+  password  String
+  adresse   String
+  isVerified Boolean  @default(false) // Ajoutez la propriété 'isVerified'
+  
+  car       Car?
+}
+
+
+model Car {
+  id String @id @default(cuid())
+  name String
+  color String
+  userId String @unique
+  user User @relation(fields: [userId], references: [id])
+  
+}
+model Organisateur {
+  id String @id @default(cuid())
+  fname String
+  lname String
+  email String
+  phonenumber String
+  adresse String
+}
+
+model Event {
+  id String @id @default(cuid())
+  nameDestination String
+  Dateofdeparture DateTime
+  maximumNumberOfplaces String
+  travelTime String
+}

@@ -1,0 +1,1 @@
+const tokenSecret = 'MY_TOKEN_SECRET';
