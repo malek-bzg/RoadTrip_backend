@@ -1,1 +1,1 @@
-const tokenSecret = 'MY_TOKEN_SECRET';
+export const tokenSecret = "VotreTokenSecret";

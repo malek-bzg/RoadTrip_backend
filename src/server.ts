@@ -1,7 +1,10 @@
 import app from "./app";
+import { userController } from "./controllers/user.controller";
 
-const port = process.env.port || 3333;
+app.post("/api/users", userController.createUser);
+
+const port = process.env.PORT || 3333;
 
 app.listen(port, () => {
-    console.log(`server running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });

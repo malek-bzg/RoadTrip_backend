@@ -1,12 +1,14 @@
-import { Router } from "express" ;
+import express, { Router } from "express" ;
 import { organisateurController } from "../controllers/organisateur.controller"
+import { upload } from "../middlewares/storage";
 
-const routes = Router();
+const router = express.Router();
 
-routes.get("/", organisateurController.index );
-routes.post("/create", organisateurController.createOrganisateur);
-routes.get("/:id", organisateurController.findUniqueOrganisateur);
-routes.put("/:id", organisateurController.updateOrganisateur);
-routes.delete("/:id", organisateurController.deletOrganisateur);
+router.get("/", organisateurController.index );
+router.post("/create", organisateurController.createOrganisateur);
+router.get("/:id", organisateurController.findUniqueOrganisateur);
+router.put("/:id", organisateurController.updateOrganisateur);
+router.put("/edit-organisateur-picture/:organisateurId", upload.single('organisateurPicture'), organisateurController.editOrganisateurPicture)
+router.delete("/:id", organisateurController.deletOrganisateur);
 
-export default routes;
+export default router;

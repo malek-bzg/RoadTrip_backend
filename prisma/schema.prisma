@@ -1,4 +1,5 @@
-
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -10,40 +11,47 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  fname     String
-  lname     String
-  email     String   @unique
-  phonenumber String @unique 
-  password  String
-  adresse   String
-  isVerified Boolean  @default(false) // Ajoutez la propriété 'isVerified'
-  
-  car       Car?
-}
+  id                 String    @id @default(cuid())
+  name               String
+  phoneNumber        String    @unique
+  email              String    @unique
+  password           String
+  confirmPassword    String
+  isVerified         Boolean   @default(false)
+  profilePicture     String?   // Ajout du champ 'profilePicture'
 
+  car                Car?
+}
 
 model Car {
-  id String @id @default(cuid())
-  name String
-  color String
-  userId String @unique
-  user User @relation(fields: [userId], references: [id])
-  
+  id          String    @id @default(cuid())
+  name        String
+  color       String
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id])
+  carPicture  String?   // Ajout du champ 'carPicture'
 }
+
 model Organisateur {
   id String @id @default(cuid())
   fname String
   lname String
-  email String
+  email String @unique
   phonenumber String
   adresse String
+  password String
+  isVerified Boolean  @default(false)
+  organisateurPicture     String?
 }
 
 model Event {
   id String @id @default(cuid())
   nameDestination String
   Dateofdeparture DateTime
+  prix String
+  description String
   maximumNumberOfplaces String
-  travelTime String
+  eventPicture     String?
+  
+  
 }
