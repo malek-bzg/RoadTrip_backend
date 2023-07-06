@@ -27,13 +27,17 @@ export const eventController = {
           return res.status(400).send({ message: "Error uploading file" });
         }
 
-        const { nameDestination, Dateofdeparture, prix, description, maximumNumberOfplaces, eventPicture} = req.body;
+        const { nameDestination, Dateofdeparture, prix, description, maximumNumberOfplaces } = req.body;
         const eventPicturePath = req.file ? req.file.path : null;
+
+
+        const dateDeparture = new Date(Dateofdeparture);
+
 
         const event = await prisma.event.create({
           data: {
             nameDestination,
-            Dateofdeparture,
+            Dateofdeparture: new Date(Dateofdeparture),
             prix,
             description,
             maximumNumberOfplaces,
@@ -47,11 +51,24 @@ export const eventController = {
       return res.status(500).send({ message: "An error occurred while creating the event" });
     }
 
-      },
+    },
+
+    async showCreateEventPage  (req: Request, res: Response)  {
+      res.render('events/createEvent');
+    },  
   async index(req: Request, res: Response) {
-    const events = await prisma.event.findMany({
-    });
+    console.log(req.baseUrl);
+    try {
+    const events = await prisma.event.findMany();
+    if(!req.baseUrl.includes( "api")){
+      return res.render('events/event', {events});
+    }
     return res.json(events);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "An error occurred while retrieving users" });
+  }
+    
   },
 
   async findUniqueEvent(req: Request, res: Response){
@@ -89,7 +106,7 @@ export const eventController = {
     return res.json({updateEvent: updateEvent});
   },
 
-  async editEventPicture   (req: Request, res: Response, next: NextFunction){
+  async editEventPicture (req: Request, res: Response, next: NextFunction){
     try {
       const file = req.file as Express.Multer.File; // Type assertion to ensure req.file is not undefined
       const eventId = req.params.eventId;

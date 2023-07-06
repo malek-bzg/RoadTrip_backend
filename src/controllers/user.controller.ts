@@ -9,7 +9,6 @@ import { NextFunction } from 'express';
 import sgMail from '@sendgrid/mail';
 
 
-
 const prisma = new PrismaClient();
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -20,6 +19,7 @@ const storage = multer.diskStorage({
     cb(null, file.fieldname + '-' + uniqueSuffix + '.jpg');
   }
 });
+
 const upload = multer({ storage }).single('profilePicture');
 export const userController = {
   
@@ -29,7 +29,6 @@ export const userController = {
         if (err) {
           return res.status(400).send({ message: "Error uploading file" });
         }
-
         const { name, phoneNumber, email, password, confirmPassword, isVerified } = req.body;
         if (!name) {
           return res.status(400).send({ message: "voyer rempli tous les champs" });
@@ -65,38 +64,67 @@ export const userController = {
             isVerified,
           },
         });
-        
         const token = jwt.sign({ email }, config.token_secret, {
           expiresIn: '36000000',
 
         });
         await doSendConfirmationEmail(email, token);
-        
-
         res.status(201).send({
           message: "success",
           user: user,
           token: jwt.verify(token, config.token_secret),
         });
-
         //return res.json({ user });
-       
       });
     } catch (error) {
       console.log(error);
       return res.status(500).send({ message: "An error occurred while creating the user"});
     }
+    //res.render('users/createUser');
+  
+  },
+  async showCreateUserPage  (req: Request, res: Response)  {
+    res.render('users/createUser');
   },
 
   index: async (req: Request, res: Response) => {
+    console.log(req.baseUrl);
     try {
       const users = await prisma.user.findMany();
+      if(!req.baseUrl.includes("api")){
+        return res.render('users/index', {users});
+      }
       return res.json(users);
     } catch (error) {
       console.log(error);
       return res.status(500).send({ message: "An error occurred while retrieving users" });
     }
   },
+  async showUpdateUserPage  (req: Request, res: Response)  {
+    res.render('users/updateUser');
+  },
+
+  async  dashboard(req: Request, res: Response) {
+    console.log(req.baseUrl);
+    try {
+      // Votre logique pour récupérer les données du tableau de bord
+  
+      // Exemple : récupérer les utilisateurs depuis Prisma
+      const users = await prisma.user.findMany();
+  
+      if (!req.baseUrl.includes('api')) {
+        // Si l'URL ne contient pas 'api', renvoyer le rendu de la vue 'dashboard' avec les utilisateurs
+        return res.render('/dashboard', { users });
+      }
+  
+      // Si l'URL contient 'api', renvoyer les utilisateurs au format JSON
+      return res.json(users);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send({ message: 'An error occurred while retrieving dashboard data' });
+    }
+  },
+
   async confirmation  (req: Request, res: Response)  {
     let token: any;
   
@@ -121,11 +149,13 @@ export const userController = {
 
     return res.json({uniqueUser: uniqueUser})
   },
+
   async makeTokenForUser(_id: string, email: string, tokenSecret: string) {
     return jwt.sign({ _id, email }, tokenSecret, {
       expiresIn: " 100000000 ", // in Milliseconds (3600000 = 1 hour)
     });
   },
+
   async getUserByToken  (req: Request, res: Response)  {
     let token = req.body.token;
   
@@ -165,7 +195,7 @@ export const userController = {
     }
   },
   
-   async forgotPassword(req: Request, res: Response): Promise<void> {
+  async forgotPassword(req: Request, res: Response): Promise<void> {
     const codeDeReinit = req.body.codeDeReinit;
     const user: User | null = await prisma.user.findUnique({ where: { email: req.body.email } });
   
@@ -194,29 +224,30 @@ export const userController = {
     }
   },
   
-    async updateUser(req: Request, res: Response){
-    const paramId= req.params.id;
-    const name = req.body.name;
-    const phoneNumber = req.body.phonenumber;
-    const email = req.body.email;
-    const password = req.body.password;
-    const confirmPassword = req.body.confirmPassword;
-
-    const updateUser = await prisma.user.update({
+  async updateUser(req: Request, res: Response) {
+    try {
+      const paramId = req.params.id;
+      const { name, phoneNumber, email, password, confirmPassword } = req.body;
+  
+      const updateUser = await prisma.user.update({
+        where: { id: paramId },
         data: {
-            name :name,
-            phoneNumber :phoneNumber,
-            email :email,
-            password :password,
-            confirmPassword :confirmPassword,
+          name,
+          phoneNumber,
+          email,
+          password,
+          confirmPassword,
         },
-        where:{
-            id: paramId,
-        },
-    });
-
-    return res.json({updateUser: updateUser});
+      });
+  
+      return res.json({ updateUser });
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour de l\'utilisateur', error);
+      return res.status(500).json({ error: 'Erreur lors de la mise à jour de l\'utilisateur' });
+    }
   },
+  
+
   async editProfilePicture(req: Request, res: Response, next: NextFunction){
     try {
       const file = req.file as Express.Multer.File; // Type assertion to ensure req.file is not undefined
@@ -258,14 +289,32 @@ export const userController = {
       return res.status(500).send({ message: 'Une erreur s\'est produite' });
     }
   },
+  async showloginPage  (req: Request, res: Response)  {
+    res.render('users/login');
+  },
   
   async login (req: Request, res: Response): Promise<void> {
     const { email, password } = req.body;
       const user = await prisma.user.findUnique({ where: { email } });  
    if (user && (await bcrypt.compare(password, user.password))) {
      const token = jwt.sign({ email: email }, tokenSecret, { expiresIn: '36000000' });
+
       if (user.isVerified) {
-        res.status(200).send({ token, user, message: 'Success' });
+        console.log("1111111");
+        const userCo = user;
+        const users = await prisma.user.count();
+      
+  
+        console.log(users);
+  
+        res.render("layout", {
+          userCo,
+          users,
+          
+        });
+  
+
+        //res.status(200).send({ token, user, message: 'Success' });
       } else {
         res.status(200).send({ user, message: 'Email non vérifié' });
       }

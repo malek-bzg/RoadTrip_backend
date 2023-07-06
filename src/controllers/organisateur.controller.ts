@@ -92,11 +92,22 @@ export const organisateurController = {
     }
  
   },
+  async showCreateOrgaisateurPage  (req: Request, res: Response)  {
+    res.render('organizers/createOrganisateur');
+  },
 
   async index(req: Request, res: Response) {
-    const organisateurs = await prisma.organisateur.findMany({
-    });
+    console.log(req.baseUrl);
+    try {
+    const organisateurs = await prisma.organisateur.findMany();
+    if(!req.baseUrl.includes("api")){
+      return res.render('organizers/organisateurs', {organisateurs});
+    }
     return res.json(organisateurs);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "An error occurred while retrieving users" });
+  }
   },
   
 

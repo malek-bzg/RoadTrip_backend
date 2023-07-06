@@ -1,9 +1,11 @@
 import userRoutes from "./user.routes";
+import userViewRoutes from "./user.views.routes";
 import carRoutes from "./car.routes";
 import OrganisateurRoutes from "./organisateur.routes";
 import eventRoutes from "./events.routes";
 
 export {userRoutes};
+export {userViewRoutes};
 export {carRoutes};
 export {OrganisateurRoutes};
 export {eventRoutes};

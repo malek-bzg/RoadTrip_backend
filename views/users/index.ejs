@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #f7f7f7;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo span {
+            font-weight: bold;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            padding: 5px;
+            width: 200px;
+        }
+
+        .search-bar i {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .sidebar ul li {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .sidebar ul li:hover {
+            background-color: #555;
+        }
+
+        .sidebar ul li i {
+            margin-right: 10px;
+        }
+
+        .content {
+            margin-left: 200px;
+            padding: 20px;
+        }
+
+        .add-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .add-button:hover {
+            background-color: #45a049;
+        }
+
+        .table-container {
+            max-height: 200px; /* Ajustez la hauteur maximale souhaitée pour le tableau */
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        th, td {
+            padding: 8px 12px; /* Espacement interne des cellules du tableau */
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-card {
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 8px 12px; /* Espacement interne des cartes utilisateur */
+            margin-bottom: 10px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .user-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .profile .username {
+            color: #333;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .profile .settings-icon {
+            color: #333;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="logo.png" alt="Logo de l'application">
+            <span>Mon application</span>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Rechercher...">
+            <i class="fas fa-search"></i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li onclick="reloadPage()"><i class="fas fa-users-cog"></i> Utilisateurs</li>
+            <li onclick="redirectToEvents()"><i class="fas fa-calendar-alt"></i> Événements</li>
+            <li onclick="redirectToOrganisateurs()"><i class="fas fa-users-cog"></i> Organisateurs</li>
+            <li onclick="redirectToCars()"><i class="fas fa-car"></i> Cars</li>
+
+        </ul>
+    </div>
+    
+    <script>
+        function redirectToOrganisateurs() {
+            window.location.href = "/organisateurs";
+        }
+        function redirectToEvents() {
+        window.location.href = "/events";
+        }
+
+        function reloadPage() {
+        window.location.reload();
+        }
+
+        function redirectToCars() {
+        window.location.href = "/cars";
+        }
+        
+    </script>
+
+    <div class="content">
+        <div class="profile">
+            <img src="profile.jpg" alt="Photo de profil">
+            <span class="username">Nom d'utilisateur</span>
+            <i class="fas fa-cog settings-icon"></i>
+        </div>
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Rechercher...">
+            <select id="search-filter">
+                <option value="id">ID utilisateur</option>
+                <option value="name">Nom</option>
+                <option value="email">Email</option>
+            </select>
+            <button id="search-button"><i class="fas fa-search"></i></button>
+        </div>
+        
+        
+
+        <button id="add-user-button" class="add-button">Ajouter</button>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Numéro de téléphone</th>
+                        <th>Email</th>
+                        <th>Mot de passe</th>
+                        <th>Confirmer le mot de passe</th>
+                        <th>Image</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach((user) => { %>
+                        <tr class="user-card" data-user-id="<%= user.id %>">
+                            <td><%= user.name %></td>
+                            <td><%= user.phoneNumber %></td>
+                            <td><%= user.email %></td>
+                            <td>*****</td>
+                            <td>*****</td>
+                            <td>
+                                <% if (user.profilePicture) { %>
+                                    <img src="<%= user.profilePicture %>"  width="10">
+                                <% } %>
+                            </td>
+                            <td>
+                                <a href="#" class="delete-link" data-user-id="<%= user.id %>">Supprimer</a>
+                                <br>
+                                <a href="/users/update" class="edit-link" data-user-id="<%= user.id %>">Modifier</a>
+
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script>
+        const deleteLinks = document.querySelectorAll('.delete-link');
+        deleteLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const userId = this.getAttribute('data-user-id');
+                deleteUser(userId);
+            });
+        });
+        const editLinks = document.querySelectorAll('.edit-link');
+        editLinks.forEach(link => {
+          link.addEventListener('click', function(event) {
+             event.preventDefault();
+             const userId = this.getAttribute('data-user-id');
+             redirectToUpdateUser(userId);
+            });
+});
+        
+        
+    
+        async function deleteUser(userId) {
+            const response = await fetch(`/users/${userId}`, {
+                method: 'DELETE'
+            });
+    
+            if (response.ok) {
+                // Suppression réussie, actualisez la page ou effectuez d'autres actions nécessaires
+                location.reload(); // Exemple : rechargement de la page
+            } else {
+                // La suppression a échoué, affichez un message d'erreur ou effectuez d'autres actions nécessaires
+                console.log('Échec de la suppression de l\'utilisateur');
+            }
+        }
+
+
+        async function findUniqueUser(userId) {
+    const response = await fetch(`/users/${userId}`);
+    const data = await response.json();
+    // Traitez la réponse de la requête ici
+    console.log(data.uniqueUser); // Exemple : affichez les données de l'utilisateur unique
+}
+
+        document.getElementById('add-user-button').addEventListener('click', function() {
+  window.location.href = 'users/create'; // Redirige vers la page createUser.ejs
+});
+function redirectToUpdateUser(userId) {
+  window.location.href = `/users/update?userId=${userId}`;
+}
+async function findUserByName(name) {
+    const response = await fetch(`/users?name=${name}`);
+    const data = await response.json();
+    // Traitez la réponse de la requête ici
+    console.log(data.users); // Exemple : affichez les utilisateurs correspondants au nom
+}
+
+async function findUserByEmail(email) {
+    const response = await fetch(`/users?email=${email}`);
+    const data = await response.json();
+    // Traitez la réponse de la requête ici
+    console.log(data.users); // Exemple : affichez les utilisateurs correspondants à l'email
+}
+
+
+document.getElementById("search-button").addEventListener('click', function() {
+    const searchValue = document.getElementById('search-input').value;
+    const searchFilter = document.getElementById('search-filter').value;
+
+    if (searchFilter === 'id') {
+        findUniqueUser(searchValue);
+    } else if (searchFilter === 'name') {
+        findUserByName(searchValue);
+    } else if (searchFilter === 'email') {
+        findUserByEmail(searchValue);
+    }
+});
+
+</script>
+    
+    
+</body>
+</html>

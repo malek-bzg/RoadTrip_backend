@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #f7f7f7;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo span {
+            font-weight: bold;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            padding: 5px;
+            width: 200px;
+        }
+
+        .search-bar i {
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .sidebar ul li {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .sidebar ul li:hover {
+            background-color: #555;
+        }
+
+        .sidebar ul li i {
+            margin-right: 10px;
+        }
+
+        .content {
+            margin-left: 200px;
+            padding: 20px;
+        }
+
+        .add-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .add-button:hover {
+            background-color: #45a049;
+        }
+
+        .table-container {
+            max-height: 200px; /* Ajustez la hauteur maximale souhaitée pour le tableau */
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        th, td {
+            padding: 8px 12px; /* Espacement interne des cellules du tableau */
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        .organisateur-card {
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 8px 12px; /* Espacement interne des cartes utilisateur */
+            margin-bottom: 10px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .organisateur-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .profile .username {
+            color: #333;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .profile .settings-icon {
+            color: #333;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="logo.png" alt="Logo de l'application">
+            <span>Mon application</span>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Rechercher...">
+            <i class="fas fa-search"></i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li onclick="redirectToUsers()"><i class="fas fa-users"></i> Utilisateurs</li>
+            <li onclick="redirectToEvents()"><i class="fas fa-calendar-alt"></i> Événements</li>
+            <li onclick="reloadPage()"><i class="fas fa-users-cog"></i> Organisateurs</li>
+            <li onclick="redirectToCars()"><i class="fas fa-car"></i> Cars</li>
+        </ul>
+    </div>
+    <script>
+        function redirectToUsers() {
+            window.location.href = "/users";
+        }
+    
+        function redirectToEvents() {
+            window.location.href = "/events";
+        }
+    
+        function reloadPage() {
+            window.location.reload();
+        }
+
+        function redirectToCars() {
+        window.location.href = "/cars";
+        }
+    </script>
+    
+
+    <div class="content">
+        <div class="profile">
+            <img src="profile.jpg" alt="Photo de profil">
+            <span class="username">Nom d'utilisateur</span>
+            <i class="fas fa-cog settings-icon"></i>
+        </div>
+
+        <button id="add-Organisateur-Button" class="add-button">Ajouter</button>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Prénom</th>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                        <th>Adresse</th>
+                        <th>Mot de passe</th>
+                        <th>Image</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% organisateurs.forEach((organisateur) => { %>
+                        <tr class="organisateur-card" data-organisateur-id="<%= organisateur.id %>">
+                            <td><%= organisateur.fname %></td>
+                            <td><%= organisateur.lname %></td>
+                            <td><%= organisateur.email %></td>
+                            <td><%= organisateur.phonenumber %></td>
+                            <td><%= organisateur.adresse %></td>
+                            <td class="password-field">*****</td>
+                            <td>
+                                <% if (organisateur.organisateurPicture) { %>
+                                    <img src="<%= organisateur.organisateurPicture %>" alt="Image de l'organisateur" width="50">
+                                <% } %>
+                            </td>
+                            <td>
+                                <a href="#" class="delete-link" data-organisateur-id="<%= organisateur.id %>">Supprimer</a>
+                                <br>
+                                <a href="#" class="edit-link">Modifier</a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+  <script>
+        const deleteLinks = document.querySelectorAll('.delete-link');
+
+        deleteLinks.forEach((link) => {
+            link.addEventListener('click', async (event) => {
+                event.preventDefault();
+                const organisateurId = link.dataset.organisateurId;
+                await deleteOrganisateur(organisateurId);
+            });
+        });
+
+        async function deleteOrganisateur(organisateurId) {
+            try {
+                const response = await fetch(`/api/organisateurs/${organisateurId}`, {
+                    method: 'DELETE',
+                });
+                const data = await response.json();
+                console.log(data.deletedOrganisateur);
+                // Faire d'autres actions après la suppression de l'organisateur si nécessaire
+
+                // Mettre à jour le tableau des organisateurs
+                const tableBody = document.querySelector('tbody');
+                const organisateurRow = document.querySelector(`tr[data-organisateur-id="${organisateurId}"]`);
+                tableBody.removeChild(organisateurRow);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        document.getElementById('add-Organisateur-Button').addEventListener('click', function() {
+  window.location.href = 'organisateurs/create'; // Redirige vers la page createUser.ejs
+});
+    </script>
+</body>
+</html>

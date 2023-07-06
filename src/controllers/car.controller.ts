@@ -44,8 +44,17 @@ export const carController = {
         },
 
     async index(req:Request, res:Response){
+      console.log(req.baseUrl);
+      try {
         const cars = await prisma.car.findMany();
+        if(!req.baseUrl.includes("api")){
+          return res.render('cars/car', {cars});
+        }
         return res.json(cars);
+      } catch (error) {
+        console.log(error);
+        return res.status(500).send({ message: "An error occurred while retrieving users" });
+      }
     },
 
     async findUniqueCar(req: Request, res: Response){
@@ -111,4 +120,5 @@ export const carController = {
     
         return res.json({deletedCar: deletedCar});
       },   
+      
 };
